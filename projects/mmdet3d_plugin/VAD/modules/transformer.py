@@ -109,9 +109,9 @@ class PerceptionTransformer(BaseModule):
         obtain bev features.
         """
 
-        bs = mlvl_feats[0].size(0)
-        bev_queries = bev_queries.unsqueeze(1).repeat(1, bs, 1)
-        bev_pos = bev_pos.flatten(2).permute(2, 0, 1)
+        bs = mlvl_feats[0].size(0)        # (B, N, C, H, W)
+        bev_queries = bev_queries.unsqueeze(1).repeat(1, bs, 1)    # (100*100,256)——>(100*100, bs, 256)
+        bev_pos = bev_pos.flatten(2).permute(2, 0, 1)    # (bs, 256, 100, 100)——>(bs, 256, 100*100)——>(100*100, bs, 256)
 
         # obtain rotation angle and shift with ego motion
         delta_x = np.array([each['can_bus'][0]
