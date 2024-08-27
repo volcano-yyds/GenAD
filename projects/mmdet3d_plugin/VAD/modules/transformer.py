@@ -109,7 +109,7 @@ class PerceptionTransformer(BaseModule):
         obtain bev features.
         """
 
-        bs = mlvl_feats[0].size(0)        # (B, N, C, H, W)
+        bs = mlvl_feats[0].size(0)        # mlvl_feats：(B, N, C, H, W)
         bev_queries = bev_queries.unsqueeze(1).repeat(1, bs, 1)    # (100*100,256)——>(100*100, bs, 256)
         bev_pos = bev_pos.flatten(2).permute(2, 0, 1)    # (bs, 256, 100, 100)——>(bs, 256, 100*100)——>(100*100, bs, 256)
 
@@ -168,7 +168,7 @@ class PerceptionTransformer(BaseModule):
             spatial_shapes.append(spatial_shape)
             feat_flatten.append(feat)
 
-        feat_flatten = torch.cat(feat_flatten, 2)
+        feat_flatten = torch.cat(feat_flatten, 2)    
         spatial_shapes = torch.as_tensor(
             spatial_shapes, dtype=torch.long, device=bev_pos.device)
         level_start_index = torch.cat((spatial_shapes.new_zeros(
